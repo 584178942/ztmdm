@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="WrongManifestParent"
+    package="com.zt.mdm.custom.device">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 往SDCard写入数据权限 -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <!-- 获取设备信息 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- 开机自启动 -->
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.intent.action.SIM_STATE_CHANGED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- 这个权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <!-- 这个权限用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
+    <permission android:name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"
+        android:protectionLevel="signature|privileged|vendorPrivileged|oem|verifier" />
+    <application
+        android:name="com.zt.mdm.custom.device.SGTApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/Theme.Zxmdm" >
+        <!-- 网络权限 -->
+        <activity android:theme="@style/CustomizedFullScreen" android:name="com.zt.mdm.custom.device.activity.TaskActivity" android:exported="false" android:excludeFromRecents="true" android:launchMode="singleInstance" android:resizeableActivity="false" android:directBootAware="true"/>
+
+        <activity
+            android:name="com.zt.mdm.custom.device.activity.LockActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:directBootAware="true"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_lock"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <receiver
+            android:name="com.zt.mdm.custom.device.receiver.PollAlarmReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="PollAlarmReceiver" />
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name="com.zt.mdm.custom.device.activity.MainActivity"
+            android:directBootAware="true"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="Q2tGMBI1wDtUfMIQ2SokP3gHtsmSlnWq" >
+        </meta-data>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+        <receiver
+            android:name="com.zt.mdm.custom.device.receiver.StartLockReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="StartLockReceiver" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.zt.mdm.custom.device.receiver.BasisSyncReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="BasisReceiver" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.zt.mdm.custom.device.receiver.BootBroadcastReceiver"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.zt.mdm.custom.device.receiver.AppInstallReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.zt.mdm.custom.device.receiver.BatteryBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.zt.mdm.custom.device.receiver.ScreenStatusReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

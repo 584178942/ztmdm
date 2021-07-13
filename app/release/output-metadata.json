@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.zt.mdm.custom.device",
+  "variantName": "processReleaseResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 11100,
+      "versionName": "1.1.100",
+      "outputFile": "com.zt.mdm.custom.device-11100-1.1.100-20210712.apk"
+    }
+  ]
+}
